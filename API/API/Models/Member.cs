@@ -14,7 +14,10 @@ namespace API.Models {
         public string Name { get; set; }
 
         [Required]
-        public string ContactName { get; set; }
+        public string ContactFirstName { get; set; }
+
+        [Required]
+        public string ContactLastName { get; set; }
 
         [Required]
         public string Email { get; set; }
