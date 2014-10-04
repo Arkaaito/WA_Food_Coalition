@@ -1,7 +1,6 @@
 package org.wafoodcoalition.givecamp.fooddonor;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import org.json.JSONException;
@@ -33,7 +32,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -45,7 +43,6 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
 
     private EditText phone;
     private EditText email;
-    private DatePicker dpResult;
     private EditText nameEdit;
     private EditText descriptionEdit;
 
@@ -63,9 +60,8 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
         loadNameOnView();
-        setDefaultPhoneOnView();
-        setCurrentDateOnView();
-        setDefaultEmailOnView();
+        loadPhoneOnView();
+        loadEmailOnView();
 
         locationEdit = (EditText) findViewById(R.id.location);
         locationEdit.setOnKeyListener(this);
@@ -104,46 +100,39 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         nameEdit.setText(settings.getString("name", ""));
     }
 
-    // display current date
-    public void setCurrentDateOnView() {
+    public void loadPhoneOnView() {
+        phone = (EditText) findViewById(R.id.phone);
+        String defaultPhone = defaultPhoneOnView();
 
-        dpResult = (DatePicker) findViewById(R.id.dpResult);
-
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-        // set current date into date picker
-        dpResult.init(year, month, day, null);
+        phone.setText(settings.getString("phone", defaultPhone));
     }
 
-    public void setDefaultPhoneOnView() {
+    public void loadEmailOnView() {
+        email = (EditText) findViewById(R.id.email);
+        String defaultEmail = defaultEmailOnView();
 
-        phone = (EditText) findViewById(R.id.phone);
-        String phoneNumber = null;
+        email.setText(settings.getString("email", defaultEmail));
+    }
+
+    public String defaultPhoneOnView() {
+        String phoneNumber = "";
 
         TelephonyManager tMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         if (tMgr != null) phoneNumber = tMgr.getLine1Number();
 
-        if (phoneNumber != null) {
-            phone.setText(phoneNumber.substring(1));
-        }
+        return phoneNumber;
     }
 
-    public void setDefaultEmailOnView() {
-
-        email = (EditText) findViewById(R.id.email);
-
+    public String defaultEmailOnView() {
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
         Account[] accounts = AccountManager.get(this.getApplicationContext()).getAccounts();
 
         for (Account account : accounts) {
             if (emailPattern.matcher(account.name).matches()) {
-                email.setText(account.name);
-                return;
+                return account.name;
             }
         }
+        return "";
     }
 
     public void locationSet() {
@@ -162,8 +151,8 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
     public void updated(FoodLocation l) {
         if(l!=null && detectedLocation==null) {
             this.detectedLocation = l;
-            String typedlocation = locationEdit.getText().toString();
-            if(typedlocation==null || typedlocation.length()<5) {
+            String typedLocation = locationEdit.getText().toString();
+            if (checkLocationText(typedLocation)) {
                 locationEdit.setText(l.getAddress());
                 locationEdit.postInvalidate();
             }
@@ -193,20 +182,24 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
     }
 
     private void submit() {
+        String resolvedAddress = getLocationText();
         if (checkRequiredFields() == false) {
             return;
         }
-        if(detectedLocation==null) {
+        if(resolvedAddress == null) {
             showLocationMissingAlert();
             return;
         }
-        rememberString("name", nameEdit.getText().toString());
+        rememberString("defaultName", nameEdit.getText().toString());
+        rememberString("defaultLocation", resolvedAddress);
+        rememberString("defaultPhone", phone.getText().toString());
+        rememberString("defaultEmail", email.getText().toString());
         updateAddress();
         postToService();
     }
 
     private boolean checkRequiredFields() {
-        if (descriptionEdit.getText().toString().length() < 20) {
+        if (descriptionEdit.getText().toString().length() < minItemLength) {
             showRequiredDescriptionAlert();
             return false;
         }
@@ -223,19 +216,23 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
     private void updateAddress() {
         try {
             String newAddress = locationEdit.getText().toString();
-            if(!detectedLocation.getAddress().equals(newAddress)) {
+            Log.v("location", "Trying to update address to "+newAddress);
+            if(detectedLocation == null || !detectedLocation.getAddress().equals(newAddress)) {
+                Log.v("location", "About to start geocode");
                 location = LocationDetection.instance().geoCode(newAddress);
             } else {
+                Log.v("location", "No location change");
                 location = detectedLocation;
             }
         } catch(Exception e) {
+            Log.v("location", "Failed to update address with "+e.getMessage());
             showLocationFailure(e);
         }
     }
 
     private void showLocationFailure(Exception e) {
         new AlertDialog.Builder(this)
-        .setTitle("Address not found on Map.")
+        .setTitle("Warning!  We could not find your address on Google Maps.  You may be contacted for directions.")
         .setMessage(e.getMessage())
         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -332,17 +329,6 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         .show();
     }
 
-    private String getDateStringFromDatePicker() {
-        String time = "T12:55:55";
-        String dateString =
-                String.valueOf(dpResult.getYear()) + "-" +
-                        String.format("%02d", 1 + dpResult.getMonth()) + "-" + // month is 0 indexed
-                        String.format("%02d", dpResult.getDayOfMonth()) +
-                        time;
-
-        return dateString;
-    }
-
     private void rememberString(String key, String value) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
@@ -367,18 +353,16 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
     private void postToService() {
         //{"Name":"NameTestX","Email":"some@hotmail.com","Phone":"5555555555","Address":"some random place","Latitude":16.0,"Longitude":65.0,"Description":"5 pounds of potatoes","Status":"New","ExpirationDate":"2013-10-12T12:55:45","FoodBankID":0}]
         try {
-
-            if(!checkLocation()) return;
+            String locationText = getLocationText();
+            if (locationText == null) {
+                return;
+            }
             JSONObject obj = new JSONObject();
             obj.put("Name", nameEdit.getText().toString());
             obj.put("Email", email.getText().toString());
             obj.put("Phone", phone.getText().toString());
-            obj.put("Address", location.getAddress());
-            obj.put("Latitude", location.getLat());
-            obj.put("Longitude", location.getLng());
             obj.put("Description", descriptionEdit.getText());
-            obj.put("Status", "Open");
-            obj.put("ExpirationDate", getDateStringFromDatePicker()); //"2013-10-14T12:55:55"
+            obj.put("Address", locationText);
             obj.toString();
 
             progressBar.bringToFront();
@@ -401,7 +385,7 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             this.obj = obj;
         }
         @Override
-        protected Integer doInBackground(Void... unsued) {
+        protected Integer doInBackground(Void... unused) {
             try {
                 return HttpUtil.post(obj, url);
             } catch (IOException e) {
@@ -411,7 +395,7 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         }
 
         @Override
-        protected void onProgressUpdate(Void... unsued) {
+        protected void onProgressUpdate(Void... unused) {
 
         }
 
@@ -433,9 +417,27 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         }
     }
 
+    public String getLocationText() {
+        String locationText = locationEdit.getText().toString();
+        Log.d("location", "User set location is "+locationText);
+        if (!checkLocationText(locationText)) {
+            if (!checkLocation()) return null;
+            else locationText = location.getAddress();
+        }
+        return locationText;
+    }
+
+    public boolean checkLocationText(String loc) {
+        if (loc != null && loc.length() >= minLocationLength) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         EditText view = (EditText)v;
-        if (view.getText().toString().length() >= minLocationLength) {
+        if (checkLocationText(view.getText().toString())) {
             locationSet();
         } else {
             locationUnset();

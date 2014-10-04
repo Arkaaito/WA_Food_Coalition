@@ -26,23 +26,7 @@
   style="@android:style/Widget.ProgressBar.Large"
   android:layout_centerHorizontal="true"
   android:layout_centerVertical="true"/>
-     
-<TextView
-  android:id="@+id/availabilityLabel"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:layout_marginLeft="5dp"
-  android:text="@string/availability_label"
-  android:layout_below="@id/description"
-  android:textAppearance="?android:attr/textAppearanceLarge" />
-
-<DatePicker
-  android:id="@+id/dpResult"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:layout_marginBottom="5dp"
-  android:layout_below="@id/availabilityLabel" />
-
+    
 <EditText
   android:id="@+id/name"
   android:layout_width="fill_parent"
@@ -51,7 +35,7 @@
   android:inputType="textCapWords"
   android:maxLines="1" 
   android:maxLength="50" 
-  android:layout_below="@id/dpResult"
+  android:layout_below="@id/description"
   />
 
 <EditText
