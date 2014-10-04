@@ -1,14 +1,15 @@
-package org.wafoodcoalition.givecamp.fooddonor;
+package org.wafoodcoalition.fooddonor;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.wafoodcoalition.givecamp.fooddonor.location.FoodLocation;
-import org.wafoodcoalition.givecamp.fooddonor.location.LocationDetection;
-import org.wafoodcoalition.givecamp.fooddonor.location.LocationUpdated;
-import org.wafoodcoalition.givecamp.fooddonor.service.HttpUtil;
+import org.wafoodcoalition.fooddonor.location.FoodLocation;
+import org.wafoodcoalition.fooddonor.location.LocationDetection;
+import org.wafoodcoalition.fooddonor.location.LocationUpdated;
+import org.wafoodcoalition.fooddonor.service.HttpUtil;
+import org.wafoodcoalition.givecamp.fooddonor.R;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -363,6 +364,10 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             obj.put("Phone", phone.getText().toString());
             obj.put("Description", descriptionEdit.getText());
             obj.put("Address", locationText);
+            obj.put("Latitude", 47);
+            obj.put("Longitude", -120);
+            obj.put("Status", "Open");
+            obj.put("ExpirationDate", "2014-10-04T12:55:55");
             obj.toString();
 
             progressBar.bringToFront();
