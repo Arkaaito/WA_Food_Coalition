@@ -1,0 +1,13 @@
+{
+"Name":"Sealandia Food Bank",
+"ContactFirstName":"John",
+"ContactLastName":"Doe",
+"Email":"johndoe@sealandia.org",
+"Address":"1 North Sealandia Drive",
+"City":"Sealandia",
+"Zip":"12345",
+"RangeInMeters":1000,
+"Phone":"5555555555",
+"Latitude":123.45,
+"Longitude":123.45
+}
