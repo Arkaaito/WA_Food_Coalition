@@ -46,11 +46,6 @@ namespace API.Controllers
 
             //var pickups = db.Pickups.Where(p => locationService.GetNearbyDonations(latitude, longitude).Where(d => d.Id == p.DonorId));
 
-            if (pickups == null)
-            {
-                return NotFound();
-            }
-
             return Ok(pickups);
         }
 
