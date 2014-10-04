@@ -27,5 +27,7 @@ namespace API.Models
         public string Notes { get; set; }
 
         public DateTime Schedule { get; set; }
+
+        public StatusTypes Status { get; set; }
     }
 }
