@@ -95,7 +95,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Donor.cs" />
-    <Compile Include="Models\DonorDistanceResult.cs" />
     <Compile Include="Models\StatusTypes.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Pickup.cs" />

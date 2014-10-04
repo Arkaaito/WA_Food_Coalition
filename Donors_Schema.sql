@@ -21,7 +21,6 @@ CREATE TABLE [dbo].[Donors](
 	[OptIn] [bit] NOT NULL,
 	[Latitude] [float] NOT NULL,
 	[Longitude] [float] NOT NULL,
-	[DistanceFromMember] [float] NULL,
 	[Discriminator] [nvarchar](128) NOT NULL,
  CONSTRAINT [PK_dbo.Donors] PRIMARY KEY CLUSTERED 
 (

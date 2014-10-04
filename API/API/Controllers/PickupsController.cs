@@ -41,11 +41,7 @@ namespace API.Controllers
         public IHttpActionResult GetPickup(double latitude, double longitude, double range)
         {
             var locationService = new LocationService();
-
-            var pickups = db.Pickups;
-
-            //var pickups = db.Pickups.Where(p => locationService.GetNearbyDonations(latitude, longitude).Where(d => d.Id == p.DonorId));
-
+            var pickups = locationService.GetNearbyPickups(latitude, longitude, range);
             return Ok(pickups);
         }
 
@@ -58,7 +54,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != pickup.ID)
+            if (id != pickup.Id)
             {
                 return BadRequest();
             }
@@ -96,7 +92,7 @@ namespace API.Controllers
             db.Pickups.Add(pickup);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = pickup.ID }, pickup);
+            return CreatedAtRoute("DefaultApi", new { id = pickup.Id }, pickup);
         }
 
         // DELETE: api/Pickups/5
@@ -126,7 +122,7 @@ namespace API.Controllers
 
         private bool PickupExists(int id)
         {
-            return db.Pickups.Count(e => e.ID == id) > 0;
+            return db.Pickups.Count(e => e.Id == id) > 0;
         }
     }
 }
