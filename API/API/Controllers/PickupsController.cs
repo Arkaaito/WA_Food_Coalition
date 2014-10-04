@@ -45,6 +45,12 @@ namespace API.Controllers
             var pickups = db.Pickups;
 
             //var pickups = db.Pickups.Where(p => locationService.GetNearbyDonations(latitude, longitude).Where(d => d.Id == p.DonorId));
+
+            if (pickup == null)
+            {
+                return NotFound();
+            }
+
             return Ok(pickups);
         }
 
@@ -91,8 +97,6 @@ namespace API.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            pickup.Status = pickup.Status ?? StatusTypes.New;
 
             db.Pickups.Add(pickup);
             db.SaveChanges();
