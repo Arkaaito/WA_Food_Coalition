@@ -1,4 +1,4 @@
-package org.wafoodcoalition.givecamp.fooddonor.location;
+package org.wafoodcoalition.fooddonor.location;
 
 import java.io.IOException;
 import java.util.List;
