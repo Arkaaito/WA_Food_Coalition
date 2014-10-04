@@ -5,10 +5,10 @@ using System.Text;
 
 namespace API.Models
 {
-    enum StatusTypes
+    public enum StatusTypes
     {
-        Open,
-        Pending,
+        New,
+        Scheduled,
         Closed
     }
 }

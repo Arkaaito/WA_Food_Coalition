@@ -36,9 +36,4 @@ namespace API.Models
 
         public Double Longitude { get; set; }
     }
-
-    public class DonorDistanceResult : Donor
-    {
-        public Double Distance { get; set; }
-    }
 }

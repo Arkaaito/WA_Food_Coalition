@@ -16,20 +16,16 @@ namespace API.Controllers
     public class PickupsController : ApiController
     {
         private FoodCoalitionAppContext db = new FoodCoalitionAppContext();
-        private ILocationService locationService = new ConcreteLocationService();
-        private EmailService emailService = new EmailService();
-        private ExpirationService expirationService = new ExpirationService();
 
-        // GET api/Pickups
+        // GET: api/Pickups
         public IQueryable<Pickup> GetPickups()
         {
-            var rv = db.Pickups;
-            return rv;
+            return db.Pickups;
         }
 
-        // GET api/Pickups/5
+        // GET: api/Pickups/5
         [ResponseType(typeof(Pickup))]
-        public IHttpActionResult GetPickups(int id)
+        public IHttpActionResult GetPickup(int id)
         {
             Pickup pickup = db.Pickups.Find(id);
             if (pickup == null)
@@ -40,22 +36,27 @@ namespace API.Controllers
             return Ok(pickup);
         }
 
-        // Get Pickups associated to the ** FoodBank ID ** that are pending
-        public IQueryable<Pickup> Get(int foodBankId, string status) {
-            return db.Pickups.Where(d => d.FoodBankID == foodBankId && d.Status.Equals(status)).AsQueryable();
+        // GET: api/Pickups/{lat}/{lng}/{range}
+        [ResponseType(typeof(Pickup))]
+        public IHttpActionResult GetPickup(double latitude, double longitude, double range)
+        {
+            var locationService = new LocationService();
+
+            var pickups = db.Pickups;
+
+            //var pickups = db.Pickups.Where(p => locationService.GetNearbyDonations(latitude, longitude).Where(d => d.Id == p.DonorId));
+
+            if (pickup == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(pickups);
         }
 
-        // Get Pickups that are near the food bank
-        public IQueryable<Pickup> Get(int foodBankId) {
-            Member foodBank = db.FoodBanks.Find(foodBankId);
-            if (foodBank == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-
-            return locationService.GetNearbyPickups(foodBank.Latitude, foodBank.Longitude).AsQueryable();
-        }
-
-        // PUT api/Pickups/5
-        public IHttpActionResult PutPickups(int id, Pickup pickup)
+        // PUT: api/Pickups/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutPickup(int id, Pickup pickup)
         {
             if (!ModelState.IsValid)
             {
@@ -85,85 +86,35 @@ namespace API.Controllers
                 }
             }
 
-            return Ok();
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        [ActionName("Status")]
-        // PUT api/Pickups/Status/7?status=open&foodbankid=1
-        public IHttpActionResult PutStatus(int id, [FromUri]string status, [FromUri]int foodbankid)
-        {
-            Pickup pickup = db.Pickups.Find(id);
-            if (pickup == null)
-            {
-                return NotFound();
-            }
-            pickup.Status = status;
-            pickup.FoodBankID = foodbankid;
-
-            db.Entry(pickup).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound();
-            }
-
-            return Ok();
-        }
-
-        [ActionName("CloseExpiredPickups")]
-        // POST api/Pickups/CloseExpiredPickups
-        public IHttpActionResult PostCloseExpiredPickups()
-        {
-            expirationService.CloseExpiredPickups();
-            return Ok();
-        }
-
-        // POST api/Pickups
+        // POST: api/Pickups
         [ResponseType(typeof(Pickup))]
-        public IHttpActionResult PostPickups(Pickup pickup)
+        public IHttpActionResult PostPickup(Pickup pickup)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            /* Validate coordinates are within Washington */
-            if (pickup.Latitude  > 44.5 &&
-                pickup.Latitude  < 49.2 &&
-                pickup.Longitude > -125.43 &&
-                pickup.Longitude < -116.8)
-            {
+            db.Pickups.Add(pickup);
+            db.SaveChanges();
 
-                db.Pickups.Add(pickup);
-                db.SaveChanges();
-                
-                List<Member> foodbanks = locationService.GetNearbyFoodBanks(pickup.Latitude, pickup.Longitude, 5).ConvertAll(fbd => (Member)fbd);
-                emailService.SendNearbyPickupsEmail(pickup, foodbanks);
-                return CreatedAtRoute("DefaultApi", new { id = pickup.ID }, pickup);
-            }
-
-            else
-            {
-                return BadRequest("Coordinates out of range.");
-            }   
+            return CreatedAtRoute("DefaultApi", new { id = pickup.ID }, pickup);
         }
 
-
-        // DELETE api/Pickups/5
+        // DELETE: api/Pickups/5
         [ResponseType(typeof(Pickup))]
         public IHttpActionResult DeletePickup(int id)
         {
-            Pickups pickup = db.Pickups.Find(id);
+            Pickup pickup = db.Pickups.Find(id);
             if (pickup == null)
             {
                 return NotFound();
             }
 
-            db.Pickups.Remove(Pickup);
+            db.Pickups.Remove(pickup);
             db.SaveChanges();
 
             return Ok(pickup);
@@ -171,7 +122,10 @@ namespace API.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            if (disposing)
+            {
+                db.Dispose();
+            }
             base.Dispose(disposing);
         }
 
