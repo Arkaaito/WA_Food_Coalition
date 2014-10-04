@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using API.Models;
 
 namespace API.Services
 {
@@ -24,6 +25,12 @@ namespace API.Services
             double distance = Math.Sqrt( (x1 - x2)*(x1 - x2) + (y1-y2)*(y1 - y2) + (z1-z2)*(z1-z2));
 
             return distance;
+        }
+        public static Double Meters(Donor donor, Member member) {
+            return Meters(donor.Latitude, donor.Longitude, member.Latitude, member.Longitude);
+        }
+        public static Double Meters(Member member, Donor donor) {
+            return Meters(member.Latitude, member.Longitude, donor.Latitude, donor.Longitude);
         }
     }
 }
