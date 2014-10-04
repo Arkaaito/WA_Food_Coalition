@@ -1,3 +1,3 @@
 import requests
-edit_member = {'memberName':'FoodPlaces', 'contactName':'John Pearson', 'email':'forgot@oo.ps', 'address':'4321 ABC Street', 'city':'Nowhere', 'zip':'98101', 'phone':'4253602061'}
-put_edit_member = requests.put(url='/api/members', data=edit_member)
+edit_member = {'Name':'FoodPlaces', 'ContactFirstName':'John','ContactLastName':'Pearson' 'Email':'forgot@oo.ps', 'Address':'4321 ABC Street', 'City':'Nowhere', 'Zip':'98101', 'Phone':'4253602061'}
+put_edit_member = requests.put(url='../api/members', data=edit_member)
