@@ -1,4 +1,4 @@
-USE [test]
+USE [SQL2012_935745_wfc]
 GO
 
 /****** Object:  Table [dbo].[Members]    Script Date: 10/4/2014 2:21:32 PM ******/
