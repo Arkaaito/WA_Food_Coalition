@@ -116,9 +116,10 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
 	public void setDefaultPhoneOnView() {
 		
 		phone = (EditText) findViewById(R.id.phone);
+		String phoneNumber = null;
 		
 		TelephonyManager tMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-		String phoneNumber = tMgr.getLine1Number();
+		if (tMgr != null) phoneNumber = tMgr.getLine1Number();
 		
 		if (phoneNumber != null) {
 			phone.setText(phoneNumber.substring(1));
