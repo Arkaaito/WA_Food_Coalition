@@ -36,25 +36,33 @@ public class LocationDetection implements LocationListener {
 	}
 	
 	public void detectLocation(LocationManager lm, LocationUpdated listener) {
+		Log.d("location", "Location updates requested from "+lm+" for "+listener);
 		if(lm!=null) {
 			//getLatLng(lm);
 			this.locationManager = lm;
 			if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+				Log.d("location", "Requesting GPS location updates");
 				lm.requestLocationUpdates(
 						LocationManager.GPS_PROVIDER, 1000, 1, this);
-			} 
-			lm.requestLocationUpdates(
-					LocationManager.NETWORK_PROVIDER, 1000, 1, this);
 				this.updateListener = listener;
+			} else if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+				Log.d("location", "Requesting network location updates");
+				lm.requestLocationUpdates(
+						LocationManager.NETWORK_PROVIDER, 1000, 1, this);
+				this.updateListener = listener;
+			} else {
+				Log.w("location", "No location types available");
+			}
 		}
 	}
 	
 		public void onLocationChanged(Location l) {
+			Log.d("location", "Location update received: "+l);
 			this.updateLocation(l);
 		}
 
 		public void onProviderDisabled(String provider) {
-			
+			Log.w("location", "Provider disabled!");
 		}
 
 		public void onProviderEnabled(String provider) {

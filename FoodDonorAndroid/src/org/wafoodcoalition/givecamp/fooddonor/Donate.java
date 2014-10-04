@@ -27,15 +27,20 @@ import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-public class Donate extends Activity implements LocationUpdated, OnClickListener {
+public class Donate extends Activity implements LocationUpdated, OnClickListener, OnKeyListener {
+	final int minLocationLength = 5;
+	final int minItemLength = 20;
+	
 	SharedPreferences settings;
 	
 	private EditText phone;
@@ -63,6 +68,9 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
 		setDefaultEmailOnView();
 		
 		locationEdit = (EditText) findViewById(R.id.location);
+		locationUnset();
+		locationEdit.setOnKeyListener(this);
+		
 		nameEdit = (EditText) findViewById(R.id.name);
 		descriptionEdit = (EditText) findViewById(R.id.description);
 	    
@@ -70,9 +78,7 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
 		foodBankMapButton.setOnClickListener(this);
 		
 	    submitButton = (Button) findViewById(R.id.submit);
-	    submitButton.setEnabled(false);
-	    submitButton.setText("Detecting location ...");
-	    submitButton.postInvalidate();
+	    locationUnset();
 	    submitButton.setOnClickListener(this);
 	    
 	    progressBar = (ProgressBar) findViewById(R.id.progress);
@@ -141,6 +147,18 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
 		}
 	}
 	
+	public void locationSet() {
+		submitButton.setEnabled(true);
+	    submitButton.setText("Request food pickup");
+	    submitButton.postInvalidate();
+	}
+	
+	public void locationUnset() {
+	    submitButton.setEnabled(false);
+	    submitButton.setText("Detecting location ...");
+	    submitButton.postInvalidate();
+	}
+	
 	/** location **/
 	public void updated(FoodLocation l) {
 		if(l!=null && detectedLocation==null) {
@@ -150,9 +168,7 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
 				locationEdit.setText(l.getAddress());
 				locationEdit.postInvalidate();
 			}
-			submitButton.setEnabled(true);
-		    submitButton.setText("Request food pickup");
-		    submitButton.postInvalidate();
+			locationSet();
 		}
 	}
 	
@@ -416,5 +432,15 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
 				showNetworkAlert();
 			}
 		}
+	}
+
+	public boolean onKey(View v, int keyCode, KeyEvent event) {
+		EditText view = (EditText)v;
+		if (view.getText().toString().length() >= minLocationLength) {
+			locationSet();
+		} else {
+			locationUnset();
+		}
+		return false;
 	}
 }
