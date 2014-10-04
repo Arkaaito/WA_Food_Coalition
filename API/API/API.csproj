@@ -76,6 +76,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DonationContext-20131012114959.mdf" />
+    <Content Include="App_Data\DonationContext-20131012114959_log.ldf">
+      <DependentUpon>DonationContext-20131012114959.mdf</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="WebForms\foodbanks.html" />
     <Content Include="WebForms\Maps.aspx" />
@@ -201,9 +205,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

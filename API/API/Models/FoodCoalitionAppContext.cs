@@ -17,12 +17,12 @@ namespace API.Models
         // 
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<API.Models.DonationContext>());
 
-        public FoodCoalitionAppContext() : base("name=DonationContext")
+        public FoodCoalitionAppContext() : base("name=GiveFoodNowContext")
         {
         }
 
-        public System.Data.Entity.DbSet<API.Models.Donation> Donations { get; set; }
-        public System.Data.Entity.DbSet<API.Models.FoodBank> FoodBanks { get; set; }
-
+        public System.Data.Entity.DbSet<API.Models.Pickup> Pickups { get; set; }
+        public System.Data.Entity.DbSet<API.Models.Member> Members { get; set; }
+        public System.Data.Entity.DbSet<API.Models.Donor> Donors { get; set; }
     }
 }

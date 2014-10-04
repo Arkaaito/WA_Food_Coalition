@@ -5,36 +5,37 @@ using System.Linq;
 using System.Web;
 
 namespace API.Models {
-    public class FoodBank {
+    public class Member {
         
         [Key]
-        [Display(Name = "ID")]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string ContactName { get; set; }
 
         [Required]
         public string Email { get; set; }
 
-        [Display(Name = "Address")]
         [Required]
         public string Address { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Zip { get; set; }
         
         [Required]
-        public long rangeInMeters { get; set; }
+        public long RangeInMeters { get; set; }
 
-        [Display(Name = "Latitude")]
+        [Required]
+        public string Phone { get; set; }
+
         public Double Latitude { get; set; }
 
-        [Display(Name = "Longitude")]
         public Double Longitude { get; set; }
-
-        // More fields to be defined later
-    }
-
-    public class FoodBankDistanceResult : FoodBank
-    {
-        [Display(Name = "Distance")]
-        public Double Distance { get; set; }
     }
 }

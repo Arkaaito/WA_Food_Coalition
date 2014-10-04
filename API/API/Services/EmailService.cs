@@ -23,7 +23,7 @@ namespace API.Services {
         private bool _useDebugEmail = Convert.ToBoolean(WebConfigurationManager.AppSettings["UseDebugEmailAddress"]);
         private string _debugEmailAddress = WebConfigurationManager.AppSettings["DebugEmailAddress"];
 
-        public void SendNearbyDonationEmail(Donation donation, List<FoodBank> foodBanksToGetEmail) {
+        public void SendNearbyDonationEmail(Pickup donation, List<Member> foodBanksToGetEmail) {
             if (foodBanksToGetEmail.Count == 0)
                 return;
 
@@ -37,7 +37,7 @@ namespace API.Services {
             MailMessage message = new MailMessage();
             // Check debug email boolean, so that we don't send testing emails to real food banks
             if (!_useDebugEmail) {
-                foreach (FoodBank foodBank in foodBanksToGetEmail) {
+                foreach (Member foodBank in foodBanksToGetEmail) {
                     message.To.Add(foodBank.Email);
                 }
             } else {
@@ -48,8 +48,8 @@ namespace API.Services {
             #region Construct Message Body
             string messageBody = _emailBody.Replace("%Address%", donation.Address)
                                            .Replace("%ExpirationDate%", donation.ExpirationDate.ToShortDateString());
-            if (!string.IsNullOrEmpty(donation.Description)) {
-                messageBody += _optionalDescriptionBody.Replace("%Description%", donation.Description);
+            if (!string.IsNullOrEmpty(donation.Items)) {
+                messageBody += _optionalDescriptionBody.Replace("%Description%", donation.Items);
             }
             string contact = "";
             if (!string.IsNullOrEmpty(donation.Phone))

@@ -7,7 +7,7 @@ using System.Web;
 namespace API.Services {
     public class TestLocationService : ILocationService {
 
-        public List<FoodBankDistanceResult> GetNearbyFoodBanks(double latitude, double longitude, int amountToReturn) {
+        public List<MemberDistanceResult> GetNearbyFoodBanks(double latitude, double longitude, int amountToReturn) {
             throw new NotImplementedException();
         }
 

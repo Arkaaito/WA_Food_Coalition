@@ -11,14 +11,14 @@ namespace API.Services
     public class ConcreteLocationService : ILocationService
     {
 
-        public List<FoodBankDistanceResult> GetNearbyFoodBanks(double latitude, double longitude, int amountToReturn)
+        public List<MemberDistanceResult> GetNearbyFoodBanks(double latitude, double longitude, int amountToReturn)
         {
             String _connectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DonationContext"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 using (SqlCommand command = new SqlCommand("dbo.usp_GetNearDonations", connection))
                 {
-                    List<FoodBankDistanceResult> result = new List<FoodBankDistanceResult>();
+                    List<MemberDistanceResult> result = new List<MemberDistanceResult>();
                     command.CommandType = CommandType.StoredProcedure;
                     #region Add Parameters
                     command.Parameters.Add(new SqlParameter("@latitude", latitude));
@@ -29,7 +29,7 @@ namespace API.Services
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        FoodBankDistanceResult foodbank = new FoodBankDistanceResult();
+                        MemberDistanceResult foodbank = new MemberDistanceResult();
                         foodbank.Name = reader.GetValue(0).ToString();
                         foodbank.Email = reader.GetValue(1).ToString();
 

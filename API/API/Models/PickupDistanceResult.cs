@@ -6,9 +6,9 @@ using System.Web;
 namespace API.Models
 {
     /*
-    public class DonationDistanceResult : Donation
+    public class PickupDistanceResult : Pickup
     {
-        public double DistanceFromFoodBank { get; set; }
+        public double DistanceFromMember { get; set; }
     }
      * */
 }

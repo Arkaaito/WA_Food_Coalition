@@ -11,12 +11,12 @@ using System.Web.Http;
 using System.Web.Http.Description;
 
 namespace API.Controllers {
-    public class FoodBankController : ApiController {
+    public class MembersController : ApiController {
         private FoodCoalitionAppContext _db = new FoodCoalitionAppContext();
         private ILocationService _locationService = new ConcreteLocationService();
         private int _defaultNearbyFoodBanks = Convert.ToInt32(WebConfigurationManager.AppSettings["DefaultAmountOfNearbyFoodBanksToReturn"]);
 
-        public IQueryable<FoodBank> Get(double latitude, double longitude, int? amountToReturn) {
+        public IQueryable<Member> Get(double latitude, double longitude, int? amountToReturn) {
             if (amountToReturn == null)
                 amountToReturn = _defaultNearbyFoodBanks;
 
@@ -24,12 +24,12 @@ namespace API.Controllers {
         }
 
         // Get all foodbanks - detailed.
-        public IQueryable<FoodBank> Get() {
+        public IQueryable<Member> Get() {
             return _db.FoodBanks.OrderBy(fb => fb.Name);
         }
 
-        public FoodBank Get(int id) {
-            FoodBank foodBank = _db.FoodBanks.Where(fb => fb.ID == id).FirstOrDefault();
+        public Member Get(int id) {
+            Member foodBank = _db.FoodBanks.Where(fb => fb.ID == id).FirstOrDefault();
             if (foodBank == null) {
                 throw new HttpException();
             }
@@ -37,8 +37,8 @@ namespace API.Controllers {
         }
 
         // Insert
-        [ResponseType(typeof (FoodBank))]
-        public IHttpActionResult Post(FoodBank foodBank) {
+        [ResponseType(typeof (Member))]
+        public IHttpActionResult Post(Member foodBank) {
             //if (WebConfigurationManager.AppSettings["AdminToken"] != token) {
             //    return BadRequest("Unauthorized.");
             //}
@@ -49,15 +49,15 @@ namespace API.Controllers {
             _db.FoodBanks.Add(foodBank);
             _db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = foodBank.ID }, foodBank);
+            return CreatedAtRoute("DefaultApi", new { id = foodBank.Id }, foodBank);
         }
 
         // Update
-        public IHttpActionResult Put(int id, FoodBank foodBank) {
+        public IHttpActionResult Put(int id, Member foodBank) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
-            if (id != foodBank.ID) {
+            if (id != foodBank.Id) {
                 return BadRequest();
             }
             _db.Entry(foodBank).State = EntityState.Modified;
@@ -76,9 +76,9 @@ namespace API.Controllers {
         }
 
         // Delete api/FoodBank/5
-        [ResponseType(typeof (FoodBank))]
+        [ResponseType(typeof (Member))]
         public IHttpActionResult Delete(int id) {
-            FoodBank foodBank = _db.FoodBanks.Find(id);
+            Member foodBank = _db.FoodBanks.Find(id);
 
             if (foodBank == null) {
                 return NotFound();
