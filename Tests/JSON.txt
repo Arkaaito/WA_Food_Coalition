@@ -1,0 +1,42 @@
+member json: {
+"$id":"1",   // Not sure where this came from
+"Id":1,
+"Name":"Sealandia Food Bank",
+"ContactFirstName":"John",
+"ContactLastName":"Doe",
+"Email":"johndoe@sealandia.org",
+"Address":"1 North Sealandia Drive",
+"City":"Sealandia",
+"Zip":"12345",
+"RangeInMeters":1000,
+"Phone":"5555555555",
+"Latitude":123.45,
+"Longitude":123.45
+}
+
+donor json: {
+"$id":"1",
+"Id":2,
+"DeviceId":"B06D4C35-3E2A-4CAE-A393-D2E7C713B51C",
+"FirstName":"Betty",
+"LastName":"White",
+"Address":"1 Old Folks Way",
+"City":"Redmond",
+"Zip":"98053",
+"Phone":"4256474526",
+"Email":"betty@white.com",
+"OptIn":true,
+"Latitude":123.45,
+"Longitude":123.45
+}
+
+pickup json: {
+"$id":"1",
+"ID":1,
+"DonorId":2,
+"Donor":null,
+"Items":"Bag of bagels by the back door",
+"Notes":"Tell them you are with GiveCamp",
+"Schedule":"2011-12-19T07:28:46.493",
+"Status":1   // Where 1=New, 2=Scheduled, 3=Closed
+}
