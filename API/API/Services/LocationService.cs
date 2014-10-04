@@ -10,16 +10,22 @@ namespace API.Services
 {
     public class LocationService : ILocationService
     {
-        public List<Pickup> GetNearbyPickups(double latitude, double longitude)
+        public List<Pickup> GetNearbyPickups(double latitude, double longitude, double range)
         {
             var db = new FoodCoalitionAppContext();
-            var nearbyDonors = db.Donors;
-            var result = new List<Pickup>();
+            var nearbyDonors = db.Donors.Where(d => DistanceBetween(d.Latitude, d.Longitude, latitude, longitude) <= range);
+            var pickupsForNearbyDonors = from donor in nearbyDonors
+                                         join pickup in db.Pickups
+                                         on donor.Id equals pickup.DonorId
+                                         select pickup;
 
-            // TODO: get pickups whose donors are near the member's lat/lng
-
-
+            var result = pickupsForNearbyDonors.ToList();
             return result;
+        }
+
+        private double DistanceBetween(double p1, double p2, double latitude, double longitude)
+        {
+            throw new NotImplementedException();
         }
 
     }

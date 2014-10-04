@@ -6,6 +6,6 @@ using System.Web;
 
 namespace API.Services {
     public interface ILocationService {
-        List<Pickup> GetNearbyPickups(double latitude, double longitude);
+        List<Pickup> GetNearbyPickups(double latitude, double longitude, double range);
     }
 }
