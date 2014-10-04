@@ -46,21 +46,21 @@ namespace API.Services {
             message.From = new MailAddress(_senderEmail);
 
             #region Construct Message Body
-            string messageBody = _emailBody.Replace("%Address%", donation.Address)
-                                           .Replace("%ExpirationDate%", donation.ExpirationDate.ToShortDateString());
-            if (!string.IsNullOrEmpty(donation.Items)) {
-                messageBody += _optionalDescriptionBody.Replace("%Description%", donation.Items);
-            }
-            string contact = "";
-            if (!string.IsNullOrEmpty(donation.Phone))
-                contact = "Tel: " + donation.Phone + " ";
-            if (!string.IsNullOrEmpty(donation.Email))
-                contact += "Email: " + donation.Email + " ";
-            if (!string.IsNullOrEmpty(contact)) {
-                messageBody += _optionalContactBody.Replace("%Contact%", contact);
-            }
+            //string messageBody = _emailBody.Replace("%Address%", donation.Address)
+            //                               .Replace("%ExpirationDate%", donation.ExpirationDate.ToShortDateString());
+            //if (!string.IsNullOrEmpty(donation.Items)) {
+            //    messageBody += _optionalDescriptionBody.Replace("%Description%", donation.Items);
+            //}
+            //string contact = "";
+            //if (!string.IsNullOrEmpty(donation.Phone))
+            //    contact = "Tel: " + donation.Phone + " ";
+            //if (!string.IsNullOrEmpty(donation.Email))
+            //    contact += "Email: " + donation.Email + " ";
+            //if (!string.IsNullOrEmpty(contact)) {
+            //    messageBody += _optionalContactBody.Replace("%Contact%", contact);
+            //}
             #endregion
-            message.Body = messageBody;
+            //message.Body = messageBody;
             message.Subject = _emailSubject;
 
             SmtpClient client = new SmtpClient();

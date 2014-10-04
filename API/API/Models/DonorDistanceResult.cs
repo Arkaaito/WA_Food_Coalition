@@ -5,10 +5,8 @@ using System.Web;
 
 namespace API.Models
 {
-    /*
-    public class PickupDistanceResult : Pickup
+    public class DonorDistanceResult : Donor
     {
         public double DistanceFromMember { get; set; }
     }
-     * */
 }

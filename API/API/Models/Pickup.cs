@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
@@ -28,6 +29,6 @@ namespace API.Models
 
         public DateTime Schedule { get; set; }
 
-        public StatusTypes Status { get; set; }
+        public StatusTypes? Status { get; set; }
     }
 }

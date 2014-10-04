@@ -5,8 +5,8 @@ using System.Linq;
 using System.Web;
 
 namespace API.Models {
-    public class Member {
-        
+    public class Member 
+    {
         [Key]
         public int Id { get; set; }
 

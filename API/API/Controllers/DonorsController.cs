@@ -12,44 +12,44 @@ using API.Models;
 
 namespace API.Controllers
 {
-    public class MembersController : ApiController
+    public class DonorsController : ApiController
     {
         private FoodCoalitionAppContext db = new FoodCoalitionAppContext();
 
-        // GET: api/Members
-        public IQueryable<Member> GetMembers()
+        // GET: api/Donors
+        public IQueryable<Donor> GetDonors()
         {
-            return db.Members;
+            return db.Donors;
         }
 
-        // GET: api/Members/5
-        [ResponseType(typeof(Member))]
-        public IHttpActionResult GetMember(int id)
+        // GET: api/Donors/5
+        [ResponseType(typeof(Donor))]
+        public IHttpActionResult GetDonor(int id)
         {
-            Member member = db.Members.Find(id);
-            if (member == null)
+            Donor donor = db.Donors.Find(id);
+            if (donor == null)
             {
                 return NotFound();
             }
 
-            return Ok(member);
+            return Ok(donor);
         }
 
-        // PUT: api/Members/5
+        // PUT: api/Donors/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutMember(int id, Member member)
+        public IHttpActionResult PutDonor(int id, Donor donor)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != member.Id)
+            if (id != donor.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(member).State = EntityState.Modified;
+            db.Entry(donor).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MemberExists(id))
+                if (!DonorExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Members
-        [ResponseType(typeof(Member))]
-        public IHttpActionResult PostMember(Member member)
+        // POST: api/Donors
+        [ResponseType(typeof(Donor))]
+        public IHttpActionResult PostDonor(Donor donor)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Members.Add(member);
+            db.Donors.Add(donor);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = member.Id }, member);
+            return CreatedAtRoute("DefaultApi", new { id = donor.Id }, donor);
         }
 
-        // DELETE: api/Members/5
-        [ResponseType(typeof(Member))]
-        public IHttpActionResult DeleteMember(int id)
+        // DELETE: api/Donors/5
+        [ResponseType(typeof(Donor))]
+        public IHttpActionResult DeleteDonor(int id)
         {
-            Member member = db.Members.Find(id);
-            if (member == null)
+            Donor donor = db.Donors.Find(id);
+            if (donor == null)
             {
                 return NotFound();
             }
 
-            db.Members.Remove(member);
+            db.Donors.Remove(donor);
             db.SaveChanges();
 
-            return Ok(member);
+            return Ok(donor);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool MemberExists(int id)
+        private bool DonorExists(int id)
         {
-            return db.Members.Count(e => e.Id == id) > 0;
+            return db.Donors.Count(e => e.Id == id) > 0;
         }
     }
 }
