@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
+using API.Services;
+
 namespace API.Services
 {
     public class LocationService : ILocationService
@@ -23,9 +25,9 @@ namespace API.Services
             return result;
         }
 
-        private double DistanceBetween(double p1, double p2, double latitude, double longitude)
+        private double DistanceBetween(double lat1, double lon1, double lat2, double lon2)
         {
-            throw new NotImplementedException();
+            return Distance.Meters(lat1, lon1, lat2, lon2);
         }
 
     }
