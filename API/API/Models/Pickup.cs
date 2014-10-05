@@ -27,7 +27,7 @@ namespace API.Models
 
         public string Notes { get; set; }
 
-        public DateTime Schedule { get; set; }
+        public DateTime? Schedule { get; set; }
 
         [Required]
         public string Address { get; set; }

@@ -1,0 +1,1 @@
+curl http://%HOST%/api/pickups
