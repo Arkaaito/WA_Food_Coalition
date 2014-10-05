@@ -37,7 +37,8 @@ namespace API.Controllers
         [ResponseType(typeof(Pickup))]
         public IHttpActionResult GetPickup(double latitude, double longitude, double range)
         {
-            var pickups = db.Pickups.Where(p => Distance.Meters(p.Latitude, p.Longitude, latitude, longitude) <= range);
+            var pickups = db.Pickups.Where(p => p.Status == StatusTypes.New).AsEnumerable()
+                                    .Where(p => Distance.Meters(p.Latitude, p.Longitude, latitude, longitude) <= range);
             return Ok(pickups);
         }
 
