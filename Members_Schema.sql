@@ -11,8 +11,8 @@ GO
 CREATE TABLE [dbo].[Members](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](max) NOT NULL,
-	[ContactFirstName] [nvarchar](max) NOT NULL,
-	[ContactLastName] [nvarchar](max) NOT NULL,
+	[ContactFirstName] [nvarchar](max) NULL,
+	[ContactLastName] [nvarchar](max) NULL,
 	[Email] [nvarchar](max) NOT NULL,
 	[Address] [nvarchar](max) NOT NULL,
 	[City] [nvarchar](max) NOT NULL,
