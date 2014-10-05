@@ -37,10 +37,10 @@
                 <td>@switch (p.Status)
                     {
                         case API.Models.StatusTypes.New:
-                            <a href="TODO">Schedule a pickup</a>
+                            <a class="btn btn-primary btn-sm" onclick="schedule(@p.Id)">Claim a pickup</a>
                             break;
                         case API.Models.StatusTypes.Scheduled:
-                            <a href="TODO">Mark as complete</a>
+                            <a class="btn btn-primary btn-sm" onclick="schedule(@p.Id)">Mark as complete</a>
                             break;
                     }
                 </td>
@@ -48,3 +48,45 @@
         }
     </tbody>
 </table>
+<script>
+    var schedule = function(pickupId) {
+        var url = '/api/pickups/'+pickupId;
+    	$.ajax({
+    		url: url,
+    		type: 'GET',
+    		dataType: 'json',
+    		success: function(data) {
+    		    data['status'] = 1;
+    		    $.ajax({
+    		        url: url,
+    		        type: 'PUT',
+    		        data: data,
+    		        dataType: 'json',
+    		        success: function() {
+    		            location.reload();
+    		        }
+    		    });
+    		}
+    	});
+    }
+    var complete = function(pickupId) {
+    	var url = '/api/pickups/'pickupId;
+    	$.ajax({
+    		url: url,
+    		type: 'GET',
+    		dataType: 'json',
+    		success: function(data) {
+    		    data['status'] = 2;
+    		    $.ajax({
+    		        url: url,
+    		        type: 'PUT',
+    		        data: data,
+    		        dataType: 'json',
+    		        success: function() {
+    		            location.reload();
+    		        }
+    		    });
+    		}
+    	});
+    }
+</script>
