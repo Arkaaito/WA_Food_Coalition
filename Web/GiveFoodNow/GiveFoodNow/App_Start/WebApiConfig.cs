@@ -12,14 +12,8 @@ namespace GiveFoodNow
 			// Web API configuration and services
 
 			config.Routes.MapHttpRoute(
-				name: "WithActionApi",
-				routeTemplate: "api/{controller}/{action:alpha}/{id:int}",
-				defaults: new { id = RouteParameter.Optional }
-			);
-
-			config.Routes.MapHttpRoute(
 				name: "DefaultApi",
-				routeTemplate: "api/{controller}/{id:int}",
+				routeTemplate: "api/{controller}/{id}",
 				defaults: new { id = RouteParameter.Optional }
 			);
 
