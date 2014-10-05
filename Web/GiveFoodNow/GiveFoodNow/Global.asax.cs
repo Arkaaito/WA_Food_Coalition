@@ -11,7 +11,7 @@ namespace GiveFoodNow
     {
         protected void Application_Start()
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<FoodCoalitionAppContext>());
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<FoodCoalitionAppContext>());
             WebApiConfig.Register(GlobalConfiguration.Configuration);
 
             AreaRegistration.RegisterAllAreas();
