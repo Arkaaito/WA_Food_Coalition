@@ -1,3 +1,3 @@
 import requests
-pickupid=123456
+pickupid=1634
 put_complete_pickup = requests.put(url='../api/pickups/%s' % pickupid, data='status':'completed')

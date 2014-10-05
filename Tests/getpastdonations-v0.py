@@ -1,3 +1,3 @@
 import requests
-donorId=12345
+donorId=1634
 requests.get(url='../api/pastdonations/%s' % donorId)
