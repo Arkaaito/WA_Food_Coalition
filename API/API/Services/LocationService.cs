@@ -10,7 +10,7 @@ using API.Services;
 
 namespace API.Services
 {
-    public class LocationService : ILocationService
+    public class LocationService
     {
         public List<Pickup> GetNearbyPickups(double latitude, double longitude, double range)
         {
