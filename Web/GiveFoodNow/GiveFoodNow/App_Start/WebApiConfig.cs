@@ -9,21 +9,19 @@ namespace GiveFoodNow
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-            
-            // Map this rule first
-            config.Routes.MapHttpRoute(
-                name: "WithActionApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+			// Web API configuration and services
 
-            // Web API routes
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+			config.Routes.MapHttpRoute(
+				name: "WithActionApi",
+				routeTemplate: "api/{controller}/{action:alpha}/{id:int}",
+				defaults: new { id = RouteParameter.Optional }
+			);
+
+			config.Routes.MapHttpRoute(
+				name: "DefaultApi",
+				routeTemplate: "api/{controller}/{id:int}",
+				defaults: new { id = RouteParameter.Optional }
+			);
 
             // New code:
             var json = config.Formatters.JsonFormatter;
