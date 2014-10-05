@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[Members](
 	[City] [nvarchar](max) NOT NULL,
 	[Zip] [nvarchar](max) NOT NULL,
 	[RangeInMeters] [bigint] NOT NULL,
-	[Phone] [nvarchar](max) NOT NULL,
+	[Phone] [nvarchar](max) NULL,
 	[Latitude] [float] NOT NULL,
 	[Longitude] [float] NOT NULL,
  CONSTRAINT [PK_dbo.Members] PRIMARY KEY CLUSTERED 
