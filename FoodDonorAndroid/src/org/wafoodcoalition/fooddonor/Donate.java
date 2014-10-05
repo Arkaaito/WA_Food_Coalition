@@ -477,8 +477,10 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
                         String inputLine;
                         BufferedReader in;
                         try {
+                            Log.v("POST", "Response body:");
                             in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                             while ((inputLine = in.readLine()) != null) {
+                                Log.v("POST", inputLine);
                                 jsonBody.append(inputLine).append("\n");
                             }
                             in.close();
