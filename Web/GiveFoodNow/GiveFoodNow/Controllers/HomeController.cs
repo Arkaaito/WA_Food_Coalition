@@ -16,8 +16,6 @@ namespace GiveFoodNow.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Contact Us!";
-
             return View();
         }
     }
