@@ -45,8 +45,6 @@ namespace API.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPickup(int id, Pickup pickup)
         {
-			Pickup currentPickup = db.Pickups.Find(id);
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
