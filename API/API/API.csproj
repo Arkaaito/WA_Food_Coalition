@@ -96,6 +96,7 @@
     <Compile Include="Models\FoodCoalitionAppContext.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Converter.cs" />
     <Compile Include="Services\Distance.cs" />
     <Compile Include="Services\EmailService.cs" />
   </ItemGroup>
