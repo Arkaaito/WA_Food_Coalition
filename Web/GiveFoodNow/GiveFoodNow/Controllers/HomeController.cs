@@ -1,12 +1,7 @@
-﻿using System.Web.Mvc;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
-using System.Web.Http.Description;
-using API.Models;
-using API.Services;
+﻿using System.Linq;
+using System.Web.Mvc;
+using GiveFoodNow.Models;
+using GiveFoodNow.Services;
 
 namespace GiveFoodNow.Controllers
 {

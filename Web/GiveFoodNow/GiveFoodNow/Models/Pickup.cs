@@ -20,6 +20,7 @@ namespace GiveFoodNow.Models
         public int? MemberId { get; set; }
 
         [ForeignKey("MemberId")]
+        public Member Member { get; set; }
 
         [Required]
         public string Items { get; set; }
