@@ -47,7 +47,7 @@ public class HttpUtil {
 		return (String[]) list.toArray(new String[list.size()]);
 	}*/
 
-    public static int post(JSONObject obj, String url) throws IOException {
+    public static HttpResponse post(JSONObject obj, String url) throws IOException {
         HttpClient httpClient = getHttpClient();
         HttpPost post = new HttpPost(url);
 
@@ -64,17 +64,6 @@ public class HttpUtil {
             Log.v("POST",h.getName()+": "+h.getValue());
         }
 
-        Log.v("POST", "Response body:");
-        String inputLine;
-        BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        try {
-            while ((inputLine = in.readLine()) != null) {
-                Log.v("POST", inputLine);
-            }
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return response.getStatusLine().getStatusCode();
+        return response;
     }
 }

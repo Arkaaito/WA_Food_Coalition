@@ -14,7 +14,8 @@ namespace API
     {
         protected void Application_Start()
         {
-            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<API.Models.FoodCoalitionAppContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<API.Models.FoodCoalitionAppContext>());
+
             WebApiConfig.Register(GlobalConfiguration.Configuration);
         }
     }

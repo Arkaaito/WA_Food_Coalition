@@ -1,15 +1,20 @@
 package org.wafoodcoalition.fooddonor;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.wafoodcoalition.fooddonor.location.FoodLocation;
 import org.wafoodcoalition.fooddonor.location.LocationDetection;
 import org.wafoodcoalition.fooddonor.location.LocationUpdated;
 import org.wafoodcoalition.fooddonor.service.HttpUtil;
-import org.wafoodcoalition.givecamp.fooddonor.R;
+import org.wafoodcoalition.fooddonor.R;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -27,32 +32,42 @@ import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-public class Donate extends Activity implements LocationUpdated, OnClickListener, OnKeyListener {
+public class Donate extends Activity implements LocationUpdated, OnClickListener {
     final int minLocationLength = 5;
     final int minItemLength = 20;
 
     SharedPreferences settings;
 
-    private EditText phone;
-    private EditText email;
-    private EditText nameEdit;
+    private EditText firstNameEdit;
+    private EditText lastNameEdit;
+    private EditText emailEdit;
+    private EditText phoneEdit;
     private EditText descriptionEdit;
+    private EditText notesEdit;
+    private EditText addressEdit;
+    private EditText cityEdit;
+    private EditText zipEdit;
+    private CheckBox optInBox;
 
-    EditText locationEdit = null;
     FoodLocation detectedLocation;
     FoodLocation location;
     Button foodBankMapButton;
     Button submitButton;
     ProgressBar progressBar;
+
+    private enum PickupStatus {
+        NEW,
+        SCHEDULED,
+        CLOSED,
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,21 +75,34 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         setContentView(R.layout.activity_donate);
         settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
-        loadNameOnView();
-        loadPhoneOnView();
-        loadEmailOnView();
-
-        locationEdit = (EditText) findViewById(R.id.location);
-        locationEdit.setOnKeyListener(this);
-
-        nameEdit = (EditText) findViewById(R.id.name);
+        firstNameEdit = (EditText) findViewById(R.id.firstName);
+        lastNameEdit = (EditText) findViewById(R.id.lastName);
+        emailEdit = (EditText) findViewById(R.id.email);
+        phoneEdit = (EditText) findViewById(R.id.phone);
         descriptionEdit = (EditText) findViewById(R.id.description);
+        notesEdit = (EditText) findViewById(R.id.notes);
+        addressEdit = (EditText) findViewById(R.id.streetAddress);
+        cityEdit = (EditText) findViewById(R.id.city);
+        zipEdit = (EditText) findViewById(R.id.zip);
+        optInBox = (CheckBox) findViewById(R.id.optIn);
+
+        loadFirstNameOnView();
+        loadLastNameOnView();
+        loadEmailOnView();
+        loadPhoneOnView();
+        loadAddressOnView();
+        loadCityOnView();
+        loadZipOnView();
+
+        if (settings.getString("deviceId", null) == null) {
+            String deviceId = UUID.randomUUID().toString();
+            rememberString("deviceId", deviceId);
+        }
 
         foodBankMapButton = (Button) findViewById(R.id.foodBankMapButton);
         foodBankMapButton.setOnClickListener(this);
 
         submitButton = (Button) findViewById(R.id.submit);
-        locationUnset();
         submitButton.setOnClickListener(this);
 
         progressBar = (ProgressBar) findViewById(R.id.progress);
@@ -96,35 +124,15 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         return true;
     }
 
-    public void loadNameOnView() {
-        nameEdit = (EditText) findViewById(R.id.name);
-        nameEdit.setText(settings.getString("name", ""));
+    public void loadFirstNameOnView() {
+        firstNameEdit.setText(settings.getString("firstName", ""));
     }
 
-    public void loadPhoneOnView() {
-        phone = (EditText) findViewById(R.id.phone);
-        String defaultPhone = defaultPhoneOnView();
-
-        phone.setText(settings.getString("phone", defaultPhone));
+    public void loadLastNameOnView() {
+        lastNameEdit.setText(settings.getString("lastName", ""));
     }
 
-    public void loadEmailOnView() {
-        email = (EditText) findViewById(R.id.email);
-        String defaultEmail = defaultEmailOnView();
-
-        email.setText(settings.getString("email", defaultEmail));
-    }
-
-    public String defaultPhoneOnView() {
-        String phoneNumber = "";
-
-        TelephonyManager tMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        if (tMgr != null) phoneNumber = tMgr.getLine1Number();
-
-        return phoneNumber;
-    }
-
-    public String defaultEmailOnView() {
+    private String defaultEmailOnView() {
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
         Account[] accounts = AccountManager.get(this.getApplicationContext()).getAccounts();
 
@@ -134,6 +142,37 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             }
         }
         return "";
+    }
+
+    public void loadEmailOnView() {
+        String defaultEmail = defaultEmailOnView();
+        emailEdit.setText(settings.getString("email", defaultEmail));
+    }
+
+    private String defaultPhoneOnView() {
+        String phoneNumber = "";
+
+        TelephonyManager tMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        if (tMgr != null) phoneNumber = tMgr.getLine1Number();
+
+        return phoneNumber;
+    }
+
+    public void loadPhoneOnView() {
+        String defaultPhone = defaultPhoneOnView();
+        phoneEdit.setText(settings.getString("phone", defaultPhone));
+    }
+
+    public void loadAddressOnView() {
+        addressEdit.setText(settings.getString("streetAddress", ""));
+    }
+
+    public void loadCityOnView() {
+        cityEdit.setText(settings.getString("city", ""));
+    }
+
+    public void loadZipOnView() {
+        zipEdit.setText(settings.getString("zip", ""));
     }
 
     public void locationSet() {
@@ -152,10 +191,10 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
     public void updated(FoodLocation l) {
         if(l!=null && detectedLocation==null) {
             this.detectedLocation = l;
-            String typedLocation = locationEdit.getText().toString();
+            String typedLocation = addressEdit.getText().toString();
             if (checkLocationText(typedLocation)) {
-                locationEdit.setText(l.getAddress());
-                locationEdit.postInvalidate();
+                addressEdit.setText(l.getAddress());
+                addressEdit.postInvalidate();
             }
             locationSet();
         }
@@ -191,10 +230,14 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             showLocationMissingAlert();
             return;
         }
-        rememberString("defaultName", nameEdit.getText().toString());
-        rememberString("defaultLocation", resolvedAddress);
-        rememberString("defaultPhone", phone.getText().toString());
-        rememberString("defaultEmail", email.getText().toString());
+
+        rememberString("firstName", firstNameEdit.getText().toString());
+        rememberString("lastName", lastNameEdit.getText().toString());
+        rememberString("email", emailEdit.getText().toString());
+        rememberString("phone", phoneEdit.getText().toString());
+        rememberString("streetAddress", resolvedAddress);
+        rememberString("city", cityEdit.getText().toString());
+        rememberString("zip", zipEdit.getText().toString());
         updateAddress();
         postToService();
     }
@@ -205,8 +248,8 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             return false;
         }
 
-        if (email.getText().toString().length() == 0 &&
-                phone.getText().toString().length() == 0) {
+        if (emailEdit.getText().toString().length() == 0 &&
+                phoneEdit.getText().toString().length() == 0) {
             showRequiredContactAlert();
             return false;
         }
@@ -216,7 +259,7 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
 
     private void updateAddress() {
         try {
-            String newAddress = locationEdit.getText().toString();
+            String newAddress = addressEdit.getText().toString();
             Log.v("location", "Trying to update address to "+newAddress);
             if(detectedLocation == null || !detectedLocation.getAddress().equals(newAddress)) {
                 Log.v("location", "About to start geocode");
@@ -270,7 +313,7 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
     }
 
     private void showNetworkAlert() {
-        progressBar.setVisibility(View.INVISIBLE); //in case its showing.
+        progressBar.setVisibility(View.INVISIBLE);
         new AlertDialog.Builder(this)
         .setTitle("Network Connection Failure")
         .setMessage("Please turn on data network or wi-fi.")
@@ -359,16 +402,24 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
                 return;
             }
             JSONObject obj = new JSONObject();
-            obj.put("Name", nameEdit.getText().toString());
-            obj.put("Email", email.getText().toString());
-            obj.put("Phone", phone.getText().toString());
-            obj.put("Description", descriptionEdit.getText());
+            obj.put("Items", descriptionEdit.getText().toString());
+            obj.put("Notes", notesEdit.getText().toString());
             obj.put("Address", locationText);
-            obj.put("Latitude", 47);
-            obj.put("Longitude", -120);
-            obj.put("Status", "Open");
-            obj.put("ExpirationDate", "2014-10-04T12:55:55");
-            obj.toString();
+            obj.put("City", cityEdit.getText().toString());
+            obj.put("Zip", zipEdit.getText().toString());
+            int donorId = settings.getInt("donorId", 0);
+            if (donorId == 0) {
+                JSONObject donor = new JSONObject();
+                donor.put("DeviceId", settings.getString("deviceId", ""));
+                donor.put("FirstName", firstNameEdit.getText().toString());
+                donor.put("LastName", lastNameEdit.getText().toString());
+                donor.put("Email", emailEdit.getText().toString());
+                donor.put("Phone", phoneEdit.getText().toString());
+                donor.put("OptIn", optInBox.isChecked());
+                obj.put("Donor", donor);
+            } else {
+                obj.put("DonorId", donorId);
+            }
 
             progressBar.bringToFront();
             progressBar.setVisibility(View.VISIBLE);
@@ -376,13 +427,15 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             // Disable the submit button
             submitButton.setEnabled(false);
 
-            new DonateTask(obj, "http://sgcwfcorg00.web803.discountasp.net/api/Donation").execute();
+
+            //new DonateTask(obj, "http://10.105.68.46/api/pickups").execute();
+            new DonateTask(obj, "http://70.42.168.133/api/pickups").execute();
         } catch (JSONException e) {
             Log.e("JSON", e.getMessage());
         }
     }
 
-    class DonateTask extends AsyncTask<Void, Void, Integer> {
+    class DonateTask extends AsyncTask<Void, Void, HttpResponse> {
         private String url;
         private JSONObject obj;
         public DonateTask(JSONObject obj, String url) {
@@ -390,12 +443,12 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             this.obj = obj;
         }
         @Override
-        protected Integer doInBackground(Void... unused) {
+        protected HttpResponse doInBackground(Void... unused) {
             try {
                 return HttpUtil.post(obj, url);
             } catch (IOException e) {
                 Log.e(e.getClass().getName(), e.getMessage(), e);
-                return 0;
+                return null;
             }
         }
 
@@ -405,25 +458,54 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         }
 
         @Override
-        protected void onPostExecute(Integer sResponse) {
-            Log.v("POST", String.valueOf(sResponse));
-            progressBar.setVisibility(View.INVISIBLE);
-            submitButton.setEnabled(true);
+        protected void onPostExecute(HttpResponse response) {
+            if (response != null) {
+                progressBar.setVisibility(View.INVISIBLE);
+                submitButton.setEnabled(true);
 
-            if(sResponse>0) {
-                if(sResponse==201) {
-                    showPostedAlert();
+                Integer sResponse = response.getStatusLine().getStatusCode();
+                if(sResponse>0) {
+                    if(sResponse==201) {
+                        showPostedAlert();
+
+                        StringBuilder jsonBody = new StringBuilder();
+                        String inputLine;
+                        BufferedReader in;
+                        try {
+                            Log.v("POST", "Response body:");
+                            in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                            while ((inputLine = in.readLine()) != null) {
+                                Log.v("POST", inputLine);
+                                jsonBody.append(inputLine).append("\n");
+                            }
+                            in.close();
+                            JSONTokener t = new JSONTokener(jsonBody.toString());
+                            JSONObject result = new JSONObject(t);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putInt("donorId", result.getInt("DonorId"));
+                            editor.commit();
+                        } catch (IllegalStateException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    } else {
+                        showPostFailedAlert(sResponse);
+                    }
                 } else {
-                    showPostFailedAlert(sResponse);
+                    showNetworkAlert();
                 }
-            } else {
-                showNetworkAlert();
             }
         }
     }
 
     public String getLocationText() {
-        String locationText = locationEdit.getText().toString();
+        String locationText = addressEdit.getText().toString();
         Log.d("location", "User set location is "+locationText);
         if (!checkLocationText(locationText)) {
             if (!checkLocation()) return null;
@@ -440,13 +522,4 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         }
     }
 
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        EditText view = (EditText)v;
-        if (checkLocationText(view.getText().toString())) {
-            locationSet();
-        } else {
-            locationUnset();
-        }
-        return false;
-    }
 }

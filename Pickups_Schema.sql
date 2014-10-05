@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[Pickups](
 	[Longitude] [float] NOT NULL,
 	[Items] [nvarchar](max) NOT NULL,
 	[Notes] [nvarchar](max) NULL,
-	[Schedule] [datetime] NOT NULL,
+	[Schedule] [datetime] NULL,
 	[Status] [int] NOT NULL,
  CONSTRAINT [PK_dbo.Pickups] PRIMARY KEY CLUSTERED 
 (

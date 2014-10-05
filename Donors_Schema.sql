@@ -16,7 +16,6 @@ CREATE TABLE [dbo].[Donors](
 	[Phone] [nvarchar](max) NULL,
 	[Email] [nvarchar](max) NULL,
 	[OptIn] [bit] NOT NULL,
-	[Discriminator] [nvarchar](128) NOT NULL,
  CONSTRAINT [PK_dbo.Donors] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
