@@ -47,32 +47,6 @@ namespace API.Controllers
         {
 			Pickup currentPickup = db.Pickups.Find(id);
 
-			// Hack!  Because I can't figure out how to access the raw JSON, I'm checking against default values for now.
-			// If the Pickup constructed from the request body has the default value for a given attribute, we assume it
-			// was not set in the JSON, and the value gets copied in from the existing record.
-			if (pickup.Id == 0)
-				pickup.Id = currentPickup.Id;
-			if (pickup.DonorId == 0)
-				pickup.DonorId = currentPickup.DonorId;
-			if (pickup.Items == null)
-				pickup.Items = currentPickup.Items;
-			if (pickup.Notes == null)
-				pickup.Notes = currentPickup.Notes;
-			if (pickup.Schedule == null)
-				pickup.Schedule = currentPickup.Schedule;
-			if (pickup.Address == null)
-				pickup.Address = currentPickup.Address;
-			if (pickup.City == null)
-				pickup.City = currentPickup.City;
-			if (pickup.Zip == null)
-				pickup.Zip = currentPickup.Zip;
-			if (pickup.Latitude == 0)
-				pickup.Latitude = currentPickup.Latitude;
-			if (pickup.Longitude == 0)
-				pickup.Longitude = currentPickup.Longitude;
-			if (pickup.Status == 0)
-				pickup.Status = currentPickup.Status;
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
