@@ -77,9 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="SQL_sprocs\fn_calculate_distance.sql" />
-    <Content Include="SQL_sprocs\usp_GetNearDonations.sql" />
-    <Content Include="SQL_sprocs\usp_GetNearbyPickups.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -108,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\sgc-wfc.org - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\local deployment.pubxml" />
     <None Include="Properties\PublishProfiles\sgc-wfc.org - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

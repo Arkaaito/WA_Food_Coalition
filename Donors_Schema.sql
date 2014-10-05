@@ -13,14 +13,9 @@ CREATE TABLE [dbo].[Donors](
 	[DeviceId] [nvarchar](max) NOT NULL,
 	[FirstName] [nvarchar](max) NOT NULL,
 	[LastName] [nvarchar](max) NOT NULL,
-	[Address] [nvarchar](max) NOT NULL,
-	[City] [nvarchar](max) NOT NULL,
-	[Zip] [nvarchar](max) NOT NULL,
 	[Phone] [nvarchar](max) NULL,
 	[Email] [nvarchar](max) NULL,
 	[OptIn] [bit] NOT NULL,
-	[Latitude] [float] NOT NULL,
-	[Longitude] [float] NOT NULL,
 	[Discriminator] [nvarchar](128) NOT NULL,
  CONSTRAINT [PK_dbo.Donors] PRIMARY KEY CLUSTERED 
 (

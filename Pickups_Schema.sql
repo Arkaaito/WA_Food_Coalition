@@ -11,6 +11,11 @@ GO
 CREATE TABLE [dbo].[Pickups](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[DonorId] [int] NOT NULL,
+	[Address] [nvarchar](max) NOT NULL,
+	[City] [nvarchar](max) NOT NULL,
+	[Zip] [nvarchar](max) NOT NULL,
+	[Latitude] [float] NOT NULL,
+	[Longitude] [float] NOT NULL,
 	[Items] [nvarchar](max) NOT NULL,
 	[Notes] [nvarchar](max) NULL,
 	[Schedule] [datetime] NOT NULL,
