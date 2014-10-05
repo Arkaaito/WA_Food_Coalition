@@ -1,27 +1,6 @@
 USE [SQL2012_935745_wfc]
 GO
-/****** Object:  Table [dbo].[FoodBanks]    Script Date: 10/4/2014 1:55:57 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[FoodBanks](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [nvarchar](max) NULL,
-	[Email] [nvarchar](max) NOT NULL,
-	[rangeInMeters] [bigint] NOT NULL DEFAULT ((0)),
-	[Latitude] [float] NOT NULL DEFAULT ((0)),
-	[Longitude] [float] NOT NULL DEFAULT ((0)),
-	[Distance] [float] NULL,
-	[Discriminator] [nvarchar](128) NOT NULL DEFAULT (''),
-	[Address] [nvarchar](max) NOT NULL DEFAULT (''),
- CONSTRAINT [PK_dbo.FoodBanks] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
-GO
 /****** Object:  Table [dbo].[FoodBanks_Staging]    Script Date: 10/4/2014 1:55:57 PM ******/
 SET ANSI_NULLS ON
 GO
