@@ -32,17 +32,15 @@ import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-public class Donate extends Activity implements LocationUpdated, OnClickListener, OnKeyListener {
+public class Donate extends Activity implements LocationUpdated, OnClickListener {
     final int minLocationLength = 5;
     final int minItemLength = 20;
 
@@ -100,8 +98,6 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             String deviceId = UUID.randomUUID().toString();
             rememberString("deviceId", deviceId);
         }
-
-        //locationEdit.setOnKeyListener(this);
 
         foodBankMapButton = (Button) findViewById(R.id.foodBankMapButton);
         foodBankMapButton.setOnClickListener(this);
@@ -411,7 +407,6 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
             obj.put("Address", locationText);
             obj.put("City", cityEdit.getText().toString());
             obj.put("Zip", zipEdit.getText().toString());
-            //obj.put("Status", PickupStatus.NEW.ordinal());
             int donorId = settings.getInt("donorId", 0);
             if (donorId == 0) {
                 JSONObject donor = new JSONObject();
@@ -525,18 +520,6 @@ public class Donate extends Activity implements LocationUpdated, OnClickListener
         } else {
             return false;
         }
-    }
-
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        /*
-        EditText view = (EditText)v;
-        if (checkLocationText(view.getText().toString())) {
-            locationSet();
-        } else {
-            locationUnset();
-        }
-         */
-        return false;
     }
 
 }
