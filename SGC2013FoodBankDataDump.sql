@@ -6,23 +6,17 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[FoodBanks_Staging](
+CREATE TABLE [dbo].[FoodBanks](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](max) NULL,
-	[ADDRESS] [nvarchar](max) NULL,
-	[City] [nvarchar](max) NULL,
-	[State] [nvarchar](max) NULL,
-	[Zipcode] [nvarchar](max) NOT NULL,
+	[Email] [nvarchar](max) NULL,
+    [rangeInMeters] [float] NOT NULL DEFAULT ((0)),
 	[Latitude] [float] NOT NULL DEFAULT ((0)),
 	[Longitude] [float] NOT NULL DEFAULT ((0)),
-	[DESC] [nvarchar](max) NOT NULL,
-	[PRECISION] [nvarchar](max) NOT NULL,
-	[Email] [nvarchar](max) NULL,
- CONSTRAINT [PK_dbo.FoodBanks_Staging] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+    [Distance] [float] NOT NULL DEFAULT ((0)),
+	[Discriminator] [nvarchar](max) NULL,
+	[ADDRESS] [nvarchar](max) NULL,
+)
 
 GO
 SET IDENTITY_INSERT [dbo].[FoodBanks] ON 

@@ -1,0 +1,3 @@
+
+C:\Users\Administrator\Documents\GitHub\WA_Food_Coalition\Tests>curl -H "Content-Type: application/json" --data @newDonorPickup.json http://localhost/api/pickups 
+{"$id":"1","Id":1,"DonorId":2,"Donor":{"$id":"2","Id":2,"DeviceId":"B06D4C35-3E2A-4CAE-A393-D2E7C713B51C","FirstName":"Steven","LastName":"Segal","Phone":"4256474526","Email":"wannabe@toughguy.com","OptIn":true},"Items":"Three bags of bagels, three dozen donuts, and a partridge","Notes":"Don't ring the front doorbell or I will shoot you","Schedule":null,"Address":"1 Tough Guy way","City":"Redmond","Zip":"98053","Latitude":123.45,"Longitude":123.45,"Status":0}
