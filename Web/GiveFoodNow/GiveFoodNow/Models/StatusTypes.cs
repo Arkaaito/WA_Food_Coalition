@@ -1,4 +1,4 @@
-﻿namespace API.Models
+﻿namespace GiveFoodNow.Models
 {
     public enum StatusTypes
     {

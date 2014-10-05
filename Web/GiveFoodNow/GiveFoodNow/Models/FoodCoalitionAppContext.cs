@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 
-namespace API.Models
+namespace GiveFoodNow.Models
 {
     public class FoodCoalitionAppContext : DbContext
     {
@@ -17,8 +17,8 @@ namespace API.Models
         {
         }
 
-        public System.Data.Entity.DbSet<API.Models.Pickup> Pickups { get; set; }
-        public System.Data.Entity.DbSet<API.Models.Member> Members { get; set; }
-        public System.Data.Entity.DbSet<API.Models.Donor> Donors { get; set; }
+        public System.Data.Entity.DbSet<Pickup> Pickups { get; set; }
+        public System.Data.Entity.DbSet<Member> Members { get; set; }
+        public System.Data.Entity.DbSet<Donor> Donors { get; set; }
     }
 }

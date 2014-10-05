@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Models
+namespace GiveFoodNow.Models
 {
     public class Pickup
     {
@@ -16,6 +16,10 @@ namespace API.Models
         [Required]
         [ForeignKey("DonorId")]
         public Donor Donor { get; set; }
+
+        public int? MemberId { get; set; }
+
+        [ForeignKey("MemberId")]
 
         [Required]
         public string Items { get; set; }

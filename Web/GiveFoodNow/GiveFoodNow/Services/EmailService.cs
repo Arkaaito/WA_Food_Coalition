@@ -1,11 +1,11 @@
-﻿using API.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Web.Configuration;
+using GiveFoodNow.Models;
 
-namespace API.Services {
+namespace GiveFoodNow.Services {
     public class EmailService {
 
         private int _maxEmailTargets =

@@ -1,7 +1,7 @@
 ﻿using System;
-using API.Models;
+using GiveFoodNow.Models;
 
-namespace API.Services
+namespace GiveFoodNow.Services
 {
     public static class Distance {
         // Theta = longitude
