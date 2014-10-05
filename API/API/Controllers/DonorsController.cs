@@ -74,6 +74,11 @@ namespace API.Controllers
         [ResponseType(typeof(Donor))]
         public IHttpActionResult PostDonor(Donor donor)
         {
+            if (donor.Email == null && donor.Phone == null)
+            {
+                return BadRequest("Either email or phone must be provided");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

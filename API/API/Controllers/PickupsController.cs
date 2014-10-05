@@ -86,7 +86,42 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                if (pickup.DonorId != 0)
+                {
+                    var donor = db.Donors.Find(pickup.DonorId);
+                    pickup.Donor = donor;
+                }
+                else if (pickup.Donor != null)
+                {
+                    var donors = from d in db.Donors
+                                 where d.FirstName == pickup.Donor.FirstName &&
+                                       d.LastName == pickup.Donor.LastName
+                                 select d;
+
+                    if (donors.Any())
+                    {
+                        pickup.Donor = donors.First();
+                    }
+                    else
+                    {
+                        if (pickup.Donor.Email == null && pickup.Donor.Phone == null)
+                            return BadRequest("Donors must provide either a phone or an email");
+
+                        db.Donors.Add(new Donor()
+                        {
+                            DeviceId = pickup.Donor.DeviceId,
+                            FirstName = pickup.Donor.FirstName,
+                            LastName = pickup.Donor.LastName,
+                            Email = pickup.Donor.Email,
+                            Phone = pickup.Donor.Phone,
+                            OptIn = pickup.Donor.OptIn
+                        });
+
+                        db.SaveChanges();
+                    }
+                }
+                else
+                    return BadRequest(ModelState);
             }
 
             db.Pickups.Add(pickup);

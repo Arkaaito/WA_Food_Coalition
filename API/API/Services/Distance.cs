@@ -26,10 +26,10 @@ namespace API.Services
 
             return distance;
         }
-        public static Double Meters(Donor donor, Member member) {
+        public static Double Meters(Pickup donor, Member member) {
             return Meters(donor.Latitude, donor.Longitude, member.Latitude, member.Longitude);
         }
-        public static Double Meters(Member member, Donor donor) {
+        public static Double Meters(Member member, Pickup donor) {
             return Meters(member.Latitude, member.Longitude, donor.Latitude, donor.Longitude);
         }
     }

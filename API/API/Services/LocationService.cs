@@ -15,6 +15,7 @@ namespace API.Services
         public List<Pickup> GetNearbyPickups(double latitude, double longitude, double range)
         {
             var db = new FoodCoalitionAppContext();
+            /*
             var nearbyDonors = db.Donors.Where(d => DistanceBetween(d.Latitude, d.Longitude, latitude, longitude) <= range);
             var pickupsForNearbyDonors = from donor in nearbyDonors
                                          join pickup in db.Pickups
@@ -22,7 +23,8 @@ namespace API.Services
                                          select pickup;
 
             var result = pickupsForNearbyDonors.ToList();
-            return result;
+             */
+            return new List<Pickup>();
         }
 
         private double DistanceBetween(double lat1, double lon1, double lat2, double lon2)

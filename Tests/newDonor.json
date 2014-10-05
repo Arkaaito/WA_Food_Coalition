@@ -1,1 +1,1 @@
-{ "DeviceId":"B06D4C35-3E2A-4CAE-A393-D2E7C713B51C", "FirstName":"Betty", "LastName":"White", "Address":"1 Old Folks Way", "City":"Redmond", "Zip":"98053", "Phone":"4256474526", "Email":"betty@white.com", "OptIn":true, "Latitude":123.45, "Longitude":123.45 }
+{ "DeviceId":"B06D4C35-3E2A-4CAE-A393-D2E7C713B51C", "FirstName":"Betty", "LastName":"White", "Phone":"4256474526", "Email":"betty@white.com", "OptIn":true }

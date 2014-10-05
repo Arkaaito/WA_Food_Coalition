@@ -29,6 +29,19 @@ namespace API.Models
 
         public DateTime Schedule { get; set; }
 
+        [Required]
+        public string Address { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Zip { get; set; }
+
+        public Double Latitude { get; set; }
+
+        public Double Longitude { get; set; }
+
         public StatusTypes Status { get; set; }
     }
 }
