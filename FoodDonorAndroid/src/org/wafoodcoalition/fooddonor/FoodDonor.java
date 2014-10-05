@@ -1,6 +1,6 @@
 package org.wafoodcoalition.fooddonor;
 
-import org.wafoodcoalition.givecamp.fooddonor.R;
+import org.wafoodcoalition.fooddonor.R;
 
 import android.app.Activity;
 import android.content.Context;

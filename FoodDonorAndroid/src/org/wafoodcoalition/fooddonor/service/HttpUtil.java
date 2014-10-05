@@ -47,7 +47,7 @@ public class HttpUtil {
 		return (String[]) list.toArray(new String[list.size()]);
 	}*/
 
-    public static int post(JSONObject obj, String url) throws IOException {
+    public static HttpResponse post(JSONObject obj, String url) throws IOException {
         HttpClient httpClient = getHttpClient();
         HttpPost post = new HttpPost(url);
 
@@ -75,6 +75,6 @@ public class HttpUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return response.getStatusLine().getStatusCode();
+        return response;
     }
 }
