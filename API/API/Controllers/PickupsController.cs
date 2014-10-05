@@ -83,50 +83,81 @@ namespace API.Controllers
         [ResponseType(typeof(Pickup))]
         public IHttpActionResult PostPickup(Pickup pickup)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                if (pickup.DonorId != 0)
+                if (!ModelState.IsValid)
                 {
-                    var donor = db.Donors.Find(pickup.DonorId);
-                    pickup.Donor = donor;
-                }
-                else if (pickup.Donor != null)
-                {
-                    var donors = from d in db.Donors
-                                 where d.FirstName == pickup.Donor.FirstName &&
-                                       d.LastName == pickup.Donor.LastName
-                                 select d;
-
-                    if (donors.Any())
+                    // Can we find the Donor by their ID in the incoming JSON?
+                    if (pickup.DonorId != 0)
                     {
-                        pickup.Donor = donors.First();
+                        var donor = db.Donors.Find(pickup.DonorId);
+                        pickup.Donor = donor;
+                        pickup.DonorId = donor.Id;
+                    }
+                    // Can we find the Donor by the information specified in "Donor" in the incoming JSON?
+                    else if (pickup.Donor != null)
+                    {
+                        if (pickup.Donor.FirstName == null || pickup.Donor.LastName == null)
+                        {
+                            return BadRequest("Donor first name and last name MUST be specified");
+                        }
+
+                        var donors = from d in db.Donors
+                                     where d.FirstName == pickup.Donor.FirstName &&
+                                           d.LastName == pickup.Donor.LastName
+                                     select d;
+
+                        // If we found them... pick the first one and set the Donor and DonorId accordingly
+                        if (donors.Any())
+                        {
+                            var donor = donors.First();
+                            pickup.Donor = donor;
+                            pickup.DonorId = donor.Id;
+                        }
+                        // Nope, nobody by that name in here. So let's add them as a convenience to Audrey
+                        else
+                        {
+                            // But we still need Email and/or Phone
+                            if (pickup.Donor.Email == null && pickup.Donor.Phone == null)
+                                return BadRequest("Donors must provide either a phone or an email");
+
+                            var donor = new Donor()
+                            {
+                                DeviceId = pickup.Donor.DeviceId,
+                                FirstName = pickup.Donor.FirstName,
+                                LastName = pickup.Donor.LastName,
+                                Email = pickup.Donor.Email,
+                                Phone = pickup.Donor.Phone,
+                                OptIn = pickup.Donor.OptIn
+                            };
+
+                            db.Donors.Add(donor);
+                            db.SaveChanges();
+
+                            pickup.DonorId = donor.Id;
+                        }
                     }
                     else
+                        return BadRequest(ModelState);
+                }
+
+                db.Pickups.Add(pickup);
+                db.SaveChanges();
+
+                return CreatedAtRoute("DefaultApi", new { id = pickup.Id }, pickup);
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbevex)
+            {
+                foreach (var x in dbevex.EntityValidationErrors)
+                {
+                    foreach (var ve in x.ValidationErrors)
                     {
-                        if (pickup.Donor.Email == null && pickup.Donor.Phone == null)
-                            return BadRequest("Donors must provide either a phone or an email");
-
-                        db.Donors.Add(new Donor()
-                        {
-                            DeviceId = pickup.Donor.DeviceId,
-                            FirstName = pickup.Donor.FirstName,
-                            LastName = pickup.Donor.LastName,
-                            Email = pickup.Donor.Email,
-                            Phone = pickup.Donor.Phone,
-                            OptIn = pickup.Donor.OptIn
-                        });
-
-                        db.SaveChanges();
+                        System.Diagnostics.Debug.WriteLine(ve.ErrorMessage);
                     }
                 }
-                else
-                    return BadRequest(ModelState);
+
+                return BadRequest(dbevex.ToString());
             }
-
-            db.Pickups.Add(pickup);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = pickup.Id }, pickup);
         }
 
         // DELETE: api/Pickups/5
