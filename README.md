@@ -21,11 +21,12 @@ The ASP.NET MVC project is an MVC 5 project, using Entity Framework to access SQ
 The Android project is a straight Java Android SDK project, using Ant (not Gradle).
 
 ## GiveCamp 2014 Team
-Stephanie Kardos (Product Owner)
-Jack Pines
-Audrey Smiley
-Scott Slack
-Ted Neward
+* Stephanie Kardos (Product Owner)
+* Jack Pines
+* Audrey Smiley
+* Scott Slack
+* Ted Neward
+* Shane Dillingham
 
 ## Work Remaining
 
