@@ -64,17 +64,6 @@ public class HttpUtil {
             Log.v("POST",h.getName()+": "+h.getValue());
         }
 
-        Log.v("POST", "Response body:");
-        String inputLine;
-        BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        try {
-            while ((inputLine = in.readLine()) != null) {
-                Log.v("POST", inputLine);
-            }
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return response;
     }
 }
