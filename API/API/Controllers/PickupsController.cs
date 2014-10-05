@@ -40,8 +40,7 @@ namespace API.Controllers
         [ResponseType(typeof(Pickup))]
         public IHttpActionResult GetPickup(double latitude, double longitude, double range)
         {
-            var locationService = new LocationService();
-            var pickups = locationService.GetNearbyPickups(latitude, longitude, range);
+            var pickups = db.Pickups.Where(p => Distance.Meters(p.Latitude, p.Longitude, latitude, longitude) <= range);
             return Ok(pickups);
         }
 
