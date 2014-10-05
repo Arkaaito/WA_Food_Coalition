@@ -1,7 +1,9 @@
-﻿using System.Web.Http;
+﻿using System.Data.Entity;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using GiveFoodNow.Models;
 
 namespace GiveFoodNow
 {
@@ -9,7 +11,7 @@ namespace GiveFoodNow
     {
         protected void Application_Start()
         {
-            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<API.Models.FoodCoalitionAppContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<FoodCoalitionAppContext>());
             WebApiConfig.Register(GlobalConfiguration.Configuration);
 
             AreaRegistration.RegisterAllAreas();
