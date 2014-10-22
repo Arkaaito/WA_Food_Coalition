@@ -18,8 +18,8 @@ namespace GiveFoodNow.Controllers
             double longitude = loggedInMember.Longitude;
             double range = loggedInMember.RangeInMeters;
             // TODO: when Jack adds the member ID to pickup, add it to the 'Scheduled' subclause below
-            var pickups = db.Pickups.Where(p => (p.Status == StatusTypes.New) || (p.Status == StatusTypes.Scheduled)).AsEnumerable()
-                        .Where(p => Distance.Meters(p.Latitude, p.Longitude, latitude, longitude) <= range);
+            var pickups = db.Pickups.Where(p => (p.Status == StatusTypes.New) || (p.Status == StatusTypes.Scheduled)).AsEnumerable();
+                        //.Where(p => Distance.Meters(p.Latitude, p.Longitude, latitude, longitude) <= range);
             ViewBag.NearbyPickups = pickups;
             return View();
         }

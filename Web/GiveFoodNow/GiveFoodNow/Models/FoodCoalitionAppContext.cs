@@ -11,7 +11,7 @@ namespace GiveFoodNow.Models
         // code to the Application_Start method in your Global.asax file.
         // Note: this will destroy and re-create your database with every model change.
         // 
-        // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<API.Models.GiveFoodNowContext>());
+        // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<GiveFoodNow.Models.GiveFoodNowContext>());
 
         public FoodCoalitionAppContext() : base("name=GiveFoodNowContext")
         {

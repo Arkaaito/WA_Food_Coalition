@@ -49,7 +49,15 @@ namespace GiveFoodNow.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                if (pickup.DonorId != 0 && pickup.Donor == null)
+                {
+                    var donor = db.Donors.Find(pickup.DonorId);
+                    pickup.Donor = donor;
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
             }
 
             if (id != pickup.Id)
