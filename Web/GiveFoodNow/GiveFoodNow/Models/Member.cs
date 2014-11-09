@@ -16,7 +16,6 @@ namespace GiveFoodNow.Models {
         [Required]
         public string ContactLastName { get; set; }
 
-        [Required]
         public string Email { get; set; }
 
         [Required]
@@ -29,7 +28,7 @@ namespace GiveFoodNow.Models {
         public string Zip { get; set; }
         
         [Required]
-        public long RangeInMeters { get; set; }
+        public int RangeInMeters { get; set; }
 
         [Required]
         public string Phone { get; set; }
@@ -37,5 +36,8 @@ namespace GiveFoodNow.Models {
         public Double Latitude { get; set; }
 
         public Double Longitude { get; set; }
+
+        [Required]
+        public string EIN { get; set; }
     }
 }

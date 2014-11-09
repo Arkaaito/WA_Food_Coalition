@@ -11,7 +11,7 @@ namespace GiveFoodNow.Controllers
 
         public ActionResult Index()
         {
-            int memberId = 2; // TODO: need to get the member id from the login info
+            int memberId = 321; // TODO: need to get the member id from the login info
             Member loggedInMember = db.Members.Find(memberId);
             ViewBag.m = loggedInMember;
             double latitude = loggedInMember.Latitude;

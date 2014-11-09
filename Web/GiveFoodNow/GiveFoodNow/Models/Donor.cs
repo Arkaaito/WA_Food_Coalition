@@ -10,10 +10,8 @@ namespace GiveFoodNow.Models
         [Required]
         public string DeviceId { get; set; }
 
-        [Required]
         public string FirstName { get; set; }
 
-        [Required]
         public string LastName { get; set; }
 
         public string Phone { get; set; }
