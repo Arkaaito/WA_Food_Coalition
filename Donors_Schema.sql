@@ -8,19 +8,18 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Donors](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[DeviceId] [nvarchar](max) NOT NULL,
-	[FirstName] [nvarchar](max) NOT NULL,
-	[LastName] [nvarchar](max) NOT NULL,
-	[Phone] [nvarchar](max) NULL,
-	[Email] [nvarchar](max) NULL,
-	[OptIn] [bit] NOT NULL,
- CONSTRAINT [PK_dbo.Donors] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+CREATE TABLE [dbo].[Donors] (
+    [Id]        INT            IDENTITY (1, 1) NOT NULL,
+    [DeviceId]  NVARCHAR (40)  NOT NULL,
+    [FirstName] NVARCHAR (50)  NULL,
+    [LastName]  NVARCHAR (50)  NULL,
+    [Phone]     NCHAR (10)     NULL,
+    [Email]     NVARCHAR (250) NULL,
+    [OptIn]     BIT            NULL,
+    [UserId] NVARCHAR(128) NOT NULL, 
+    CONSTRAINT [PK_Donors] PRIMARY KEY CLUSTERED ([Id] ASC), 
+    CONSTRAINT [FK_Donors_AspNetUsers] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers]([Id])
+);
 
 GO
 

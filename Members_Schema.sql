@@ -8,24 +8,23 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Members](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [nvarchar](max) NOT NULL,
-	[ContactFirstName] [nvarchar](max) NULL,
-	[ContactLastName] [nvarchar](max) NULL,
-	[Email] [nvarchar](max) NOT NULL,
-	[Address] [nvarchar](max) NOT NULL,
-	[City] [nvarchar](max) NOT NULL,
-	[Zip] [nvarchar](max) NOT NULL,
-	[RangeInMeters] [bigint] NOT NULL,
-	[Phone] [nvarchar](max) NULL,
-	[Latitude] [float] NOT NULL,
-	[Longitude] [float] NOT NULL,
- CONSTRAINT [PK_dbo.Members] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
+CREATE TABLE [dbo].[Members] (
+    [Id]               INT            IDENTITY (1, 1) NOT NULL,
+    [Name]             NVARCHAR (100) NOT NULL,
+    [ContactFirstName] NVARCHAR (50)  NULL,
+    [ContactLastName]  NVARCHAR (50)  NULL,
+    [Email]            NVARCHAR (250) NULL,
+    [Address]          NVARCHAR (500) NOT NULL,
+    [City]             NVARCHAR (50)  NOT NULL,
+    [Zip]              NCHAR (5)      NOT NULL,
+    [RangeInMeters]    INT            NOT NULL,
+    [Phone]            NCHAR (10)     NOT NULL,
+    [Latitude]         FLOAT (53)     NULL,
+    [Longitude]        FLOAT (53)     NULL,
+    [EIN]              NCHAR (10)     NULL,
+    [UserId] NVARCHAR(128) NULL, 
+    CONSTRAINT [PK_Members] PRIMARY KEY CLUSTERED ([Id] ASC), 
+    CONSTRAINT [FK_Members_AspNetUsers] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers]([Id])
+);
 GO
 
