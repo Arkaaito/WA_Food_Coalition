@@ -11,6 +11,7 @@ using GiveFoodNow.Services;
 
 namespace GiveFoodNow.Controllers
 {
+    [Authorize]
     public class PickupsController : ApiController
     {
         private FoodCoalitionAppContext db = new FoodCoalitionAppContext();

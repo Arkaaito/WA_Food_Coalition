@@ -9,6 +9,7 @@ namespace GiveFoodNow.Controllers
     {
         private FoodCoalitionAppContext db = new FoodCoalitionAppContext();
 
+        [Authorize]
         public ActionResult Index()
         {
             int memberId = 321; // TODO: need to get the member id from the login info

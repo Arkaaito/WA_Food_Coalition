@@ -10,6 +10,7 @@ using GiveFoodNow.Models;
 
 namespace GiveFoodNow.Controllers
 {
+    [Authorize]
     public class MembersController : ApiController
     {
         private FoodCoalitionAppContext db = new FoodCoalitionAppContext();
