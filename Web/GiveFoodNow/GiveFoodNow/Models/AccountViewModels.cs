@@ -64,20 +64,8 @@ namespace GiveFoodNow.Models
 
     public class RegisterViewModel
     {
-        [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
         [Display(Name = "User Name")]
         public string UserName { get; set; }
-
-        [Display(Name = "Phone")]
-        [Phone]
-        public string Phone { get; set; }
 
         [Required]
         [EmailAddress]
@@ -94,8 +82,35 @@ namespace GiveFoodNow.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
 
-        public bool IsDonor { get; set; }
+    public class RegisterDonorViewModel : RegisterUserViewModel
+    {
+        [Required]
+        [Display(Name = "Opt into newsletter")]
+        public bool OptIn { get; set; }
+    }
+
+    public class RegisterMemberViewModel : RegisterUserViewModel
+    {
+        [Required]
+        [Display(Name = "Organization Name")]
+        public bool Name { get; set; }
+    }
+
+    public class RegisterUserViewModel
+    {
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Display(Name = "Phone")]
+        [Phone]
+        public string Phone { get; set; }
     }
 
     public class ResetPasswordViewModel
