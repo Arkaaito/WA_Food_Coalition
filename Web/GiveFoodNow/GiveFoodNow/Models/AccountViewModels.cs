@@ -49,9 +49,8 @@ namespace GiveFoodNow.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "User Name")]
-        [EmailAddress]
-        public string UserName { get; set; }
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,8 +63,8 @@ namespace GiveFoodNow.Models
 
     public class RegisterViewModel
     {
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [EmailAddress]
