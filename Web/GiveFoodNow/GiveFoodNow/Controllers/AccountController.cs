@@ -147,7 +147,7 @@ namespace GiveFoodNow.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, bool IsMember = false)
         {
             if (ModelState.IsValid)
             {
@@ -169,6 +169,24 @@ namespace GiveFoodNow.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /Account/RegisterMemberUser
+        public ActionResult RegisterMemberUser() 
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/RegisterMemberUser
+        public ActionResult RegisterMemberUser(RegisterMemberViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+            }
+
             return View(model);
         }
 

@@ -94,7 +94,7 @@ namespace GiveFoodNow.Models
     {
         [Required]
         [Display(Name = "Organization Name")]
-        public bool Name { get; set; }
+        public bool OrgName { get; set; }
     }
 
     public class RegisterUserViewModel
